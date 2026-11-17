@@ -1,46 +1,41 @@
+# SPDX‑License‑Identifier: Apache‑2.0
 #
-# SPDX-License-Identifier: Apache-2.0
-#
-# Copyright (C) 2022-2025 The OrangeFox Recovery Project
-# SPDX-License-Identifier: GPL-3.0-or-later
+# Copyright (C) 2022‑2025 The OrangeFox Recovery Project
+# SPDX‑License‑Identifier: GPL‑3.0‑or‑later
 #
 DEVICE_PATH := device/xiaomi/alioth
 # Architecture
 TARGET_ARCH := arm64
-TARGET_ARCH_VARIANT := armv8-2a
-TARGET_CPU_ABI := arm64-v8a
+TARGET_ARCH_VARIANT := armv8‑2a
+TARGET_CPU_ABI := arm64‑v8a
 TARGET_CPU_ABI2 :=
-TARGET_CPU_VARIANT := cortex-a76
+TARGET_CPU_VARIANT := cortex‑a76
 TARGET_CPU_VARIANT_RUNTIME := kryo385
 TARGET_2ND_ARCH := arm
-TARGET_2ND_ARCH_VARIANT := armv8-2a
-TARGET_2ND_CPU_ABI := armeabi-v7a
+TARGET_2ND_ARCH_VARIANT := armv8‑2a
+TARGET_2ND_CPU_ABI := armeabi‑v7a
 TARGET_2ND_CPU_ABI2 := armeabi
-TARGET_2ND_CPU_VARIANT := cortex-a55
+TARGET_2ND_CPU_VARIANT := cortex‑a55
 TARGET_2ND_CPU_VARIANT_RUNTIME := kryo385
 ENABLE_CPUSETS := true
 ENABLE_SCHEDBOOST := true
 TARGET_SUPPORTS_64_BIT_APPS := true
 TARGET_IS_64_BIT := true
 BOARD_VENDOR := xiaomi
-
 # Assert
 TARGET_OTA_ASSERT_DEVICE := alioth,aliothin
-
 # Platform
 PRODUCT_PLATFORM := kona
 TARGET_BOOTLOADER_BOARD_NAME := $(PRODUCT_PLATFORM)
 QCOM_BOARD_PLATFORMS += xiaomi_sm8250
 TARGET_BOARD_PLATFORM := $(QCOM_BOARD_PLATFORMS)
-TARGET_BOARD_PLATFORM_GPU := qcom-adreno650
+TARGET_BOARD_PLATFORM_GPU := qcom‑adreno650
 TARGET_NO_BOOTLOADER := true
 TARGET_USES_UEFI := true
 BOARD_USES_QCOM_HARDWARE := true
 BOARD_BOOT_HEADER_VERSION := 3
-
-#  support "fastboot update <zip-file>"
-TARGET_BOARD_INFO_FILE := $(DEVICE_PATH)/board-info.txt
-
+#  support "fastboot update <zip‑file>"
+TARGET_BOARD_INFO_FILE := $(DEVICE_PATH)/board‑info.txt
 # Kernel
 TARGET_KERNEL_ARCH := arm64
 TARGET_KERNEL_HEADER_ARCH := arm64
@@ -52,13 +47,11 @@ BOARD_KERNEL_TAGS_OFFSET   := 0x00000100
 BOARD_KERNEL_OFFSET        := 0x00008000
 BOARD_KERNEL_SECOND_OFFSET := 0x00f00000
 BOARD_DTB_OFFSET           := 0x01f00000
-
 # cmdline
 VENDOR_CMDLINE := console=ttyMSM0,115200n8 androidboot.hardware=qcom androidboot.console=ttyMSM0 androidboot.memcg=1 lpm_levels.sleep_disabled=1 video=vfb:640x400,bpp=32,memsize=3072000
 VENDOR_CMDLINE += msm_rtb.filter=0x237 service_locator.enable=1 androidboot.usbcontroller=a600000.dwc3 swiotlb=2048 loop.max_part=7 cgroup.memory=nokmem,nosocket reboot=panic_warm
 VENDOR_CMDLINE += androidboot.init_fatal_reboot_target=recovery
 BOARD_KERNEL_CMDLINE := $(VENDOR_CMDLINE)
-
 # other mbootimg arguments
 BOARD_MKBOOTIMG_ARGS += --base $(BOARD_KERNEL_BASE)
 BOARD_MKBOOTIMG_ARGS += --ramdisk_offset $(BOARD_RAMDISK_OFFSET)
@@ -68,15 +61,13 @@ BOARD_MKBOOTIMG_ARGS += --second_offset $(BOARD_KERNEL_SECOND_OFFSET)
 BOARD_MKBOOTIMG_ARGS += --dtb_offset $(BOARD_DTB_OFFSET)
 BOARD_MKBOOTIMG_ARGS += --header_version $(BOARD_BOOT_HEADER_VERSION)
 BOARD_MKBOOTIMG_ARGS += --pagesize $(BOARD_KERNEL_PAGESIZE) --board ""
-
 KERNEL_PATH := $(DEVICE_PATH)/prebuilt
 # twrp‑16: Image.gz‑dtb 保持兼容原有预编译；若后续拆分为独立 kernel/dtb，按需修改
-TARGET_PREBUILT_KERNEL := $(KERNEL_PATH)/Image.gz-dtb
+TARGET_PREBUILT_KERNEL := $(KERNEL_PATH)/Image.gz‑dtb
 BOARD_PREBUILT_DTBOIMAGE := $(KERNEL_PATH)/dtbo.img
-
 BOARD_USES_RECOVERY_AS_BOOT := true
+# 【已删除废弃 BOARD_BUILD_SYSTEM_ROOT_IMAGE := false】
 AB_OTA_UPDATER := true
-
 # ====== AOSP16 TWRP‑16.0 AVB2 修改：使用recovery专用AVB配置，移除旧vbmeta_system ======
 BOARD_AVB_ENABLE := true
 BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flags 3
@@ -84,7 +75,6 @@ BOARD_AVB_RECOVERY_KEY_PATH := external/avb/test/data/testkey_rsa2048.pem
 BOARD_AVB_RECOVERY_ALGORITHM := SHA256_RSA2048
 BOARD_AVB_RECOVERY_ROLLBACK_INDEX := 1
 BOARD_AVB_RECOVERY_ROLLBACK_INDEX_LOCATION := 1
-
 # File systems
 BOARD_FLASH_BLOCK_SIZE := 262144
 BOARD_BOOTIMAGE_PARTITION_SIZE := 201326592
@@ -95,33 +85,27 @@ BOARD_USERDATAIMAGE_FILE_SYSTEM_TYPE := f2fs
 TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_USERIMAGES_USE_F2FS := true
 TARGET_COPY_OUT_VENDOR := vendor
-
 # Dynamic Partiton
 BOARD_SUPER_PARTITION_SIZE := 9126805504
-BOARD_QTI_DYNAMIC_PARTITIONS_SIZE := 9122611200 # ( BOARD_SUPER_PARTITION_SIZE - 4MB )
+BOARD_QTI_DYNAMIC_PARTITIONS_SIZE := 9122611200 # ( BOARD_SUPER_PARTITION_SIZE ‑ 4MB )
 BOARD_SUPER_PARTITION_GROUPS := qti_dynamic_partitions
 BOARD_QTI_DYNAMIC_PARTITIONS_PARTITION_LIST := system product odm system_ext vendor
-
 # Properties
 TARGET_SYSTEM_PROP += $(DEVICE_PATH)/system.prop
 TARGET_VENDOR_PROP += $(DEVICE_PATH)/vendor.prop
-
 # Recovery
 BOARD_HAS_LARGE_FILESYSTEM := true
 TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
 LC_ALL := C
-
 # System as root
 BOARD_ROOT_EXTRA_FOLDERS := bluetooth dsp firmware persist
 BOARD_SUPPRESS_SECURE_ERASE := true
-
 # Broken stuff
 ALLOW_MISSING_DEPENDENCIES := true
 BUILD_BROKEN_USES_NETWORK := true
 BUILD_BROKEN_DUP_RULES := true
 BUILD_BROKEN_ELF_PREBUILT_PRODUCT_COPY_FILES := true
 BUILD_BROKEN_MISSING_REQUIRED_MODULES := true
-
 # Configuration
 TW_THEME := portrait_hdpi
 RECOVERY_SDCARD_ON_DATA := true
@@ -134,7 +118,7 @@ TW_DEFAULT_LANGUAGE := zh_CN
 TW_NO_SCREEN_BLANK := true
 TARGET_USES_MKE2FS := true
 TW_INPUT_BLACKLIST := "hbtp_vm"
-TW_BRIGHTNESS_PATH := "/sys/class/backlight/panel0-backlight/brightness"
+TW_BRIGHTNESS_PATH := "/sys/class/backlight/panel0‑backlight/brightness"
 TW_USE_TOOLBOX := true
 TW_INCLUDE_NTFS_3G := true
 TW_INCLUDE_REPACKTOOLS := true
@@ -143,9 +127,7 @@ TWRP_INCLUDE_LOGCAT := true
 TARGET_USES_LOGD := true
 TW_EXCLUDE_APEX := true
 TW_SUPPORT_INPUT_AIDL_HAPTICS := true
-
 # ========= TWRP‑16.0 Android16 强制要求：FSCrypt v2 =========
 TW_USE_FSCRYPT_POLICY := 2
-
 # Python：twrp‑16.0兼容性差，先注释；需要再开启测试
 # TW_INCLUDE_PYTHON := true
