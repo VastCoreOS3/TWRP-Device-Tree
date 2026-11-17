@@ -4,9 +4,7 @@
 # Copyright (C) 2022-2025 The OrangeFox Recovery Project
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
-
 DEVICE_PATH := device/xiaomi/alioth
-
 # Architecture
 TARGET_ARCH := arm64
 TARGET_ARCH_VARIANT := armv8-2a
@@ -14,14 +12,12 @@ TARGET_CPU_ABI := arm64-v8a
 TARGET_CPU_ABI2 :=
 TARGET_CPU_VARIANT := cortex-a76
 TARGET_CPU_VARIANT_RUNTIME := kryo385
-
 TARGET_2ND_ARCH := arm
 TARGET_2ND_ARCH_VARIANT := armv8-2a
 TARGET_2ND_CPU_ABI := armeabi-v7a
 TARGET_2ND_CPU_ABI2 := armeabi
 TARGET_2ND_CPU_VARIANT := cortex-a55
 TARGET_2ND_CPU_VARIANT_RUNTIME := kryo385
-
 ENABLE_CPUSETS := true
 ENABLE_SCHEDBOOST := true
 TARGET_SUPPORTS_64_BIT_APPS := true
@@ -61,8 +57,7 @@ BOARD_DTB_OFFSET           := 0x01f00000
 VENDOR_CMDLINE := console=ttyMSM0,115200n8 androidboot.hardware=qcom androidboot.console=ttyMSM0 androidboot.memcg=1 lpm_levels.sleep_disabled=1 video=vfb:640x400,bpp=32,memsize=3072000
 VENDOR_CMDLINE += msm_rtb.filter=0x237 service_locator.enable=1 androidboot.usbcontroller=a600000.dwc3 swiotlb=2048 loop.max_part=7 cgroup.memory=nokmem,nosocket reboot=panic_warm
 VENDOR_CMDLINE += androidboot.init_fatal_reboot_target=recovery
-
- BOARD_KERNEL_CMDLINE := $(VENDOR_CMDLINE)
+BOARD_KERNEL_CMDLINE := $(VENDOR_CMDLINE)
 
 # other mbootimg arguments
 BOARD_MKBOOTIMG_ARGS += --base $(BOARD_KERNEL_BASE)
@@ -75,22 +70,20 @@ BOARD_MKBOOTIMG_ARGS += --header_version $(BOARD_BOOT_HEADER_VERSION)
 BOARD_MKBOOTIMG_ARGS += --pagesize $(BOARD_KERNEL_PAGESIZE) --board ""
 
 KERNEL_PATH := $(DEVICE_PATH)/prebuilt
-
+# twrp‑16: Image.gz‑dtb 保持兼容原有预编译；若后续拆分为独立 kernel/dtb，按需修改
 TARGET_PREBUILT_KERNEL := $(KERNEL_PATH)/Image.gz-dtb
 BOARD_PREBUILT_DTBOIMAGE := $(KERNEL_PATH)/dtbo.img
 
-
 BOARD_USES_RECOVERY_AS_BOOT := true
-BOARD_BUILD_SYSTEM_ROOT_IMAGE := false
 AB_OTA_UPDATER := true
 
-# AVB
+# ====== AOSP16 TWRP‑16.0 AVB2 修改：使用recovery专用AVB配置，移除旧vbmeta_system ======
 BOARD_AVB_ENABLE := true
-BOARD_AVB_VBMETA_SYSTEM := system
-BOARD_AVB_VBMETA_SYSTEM_KEY_PATH := external/avb/test/data/testkey_rsa2048.pem
-BOARD_AVB_VBMETA_SYSTEM_ALGORITHM := SHA256_RSA2048
-BOARD_AVB_VBMETA_SYSTEM_ROLLBACK_INDEX := $(PLATFORM_SECURITY_PATCH_TIMESTAMP)
-BOARD_AVB_VBMETA_SYSTEM_ROLLBACK_INDEX_LOCATION := 1
+BOARD_AVB_MAKE_VBMETA_IMAGE_ARGS += --flags 3
+BOARD_AVB_RECOVERY_KEY_PATH := external/avb/test/data/testkey_rsa2048.pem
+BOARD_AVB_RECOVERY_ALGORITHM := SHA256_RSA2048
+BOARD_AVB_RECOVERY_ROLLBACK_INDEX := 1
+BOARD_AVB_RECOVERY_ROLLBACK_INDEX_LOCATION := 1
 
 # File systems
 BOARD_FLASH_BLOCK_SIZE := 262144
@@ -127,7 +120,7 @@ ALLOW_MISSING_DEPENDENCIES := true
 BUILD_BROKEN_USES_NETWORK := true
 BUILD_BROKEN_DUP_RULES := true
 BUILD_BROKEN_ELF_PREBUILT_PRODUCT_COPY_FILES := true
-BUILD_BROKEN_MISSING_REQUIRED_MODULES := true # may not really be needed
+BUILD_BROKEN_MISSING_REQUIRED_MODULES := true
 
 # Configuration
 TW_THEME := portrait_hdpi
@@ -151,6 +144,8 @@ TARGET_USES_LOGD := true
 TW_EXCLUDE_APEX := true
 TW_SUPPORT_INPUT_AIDL_HAPTICS := true
 
-# Python
-TW_INCLUDE_PYTHON := true
+# ========= TWRP‑16.0 Android16 强制要求：FSCrypt v2 =========
+TW_USE_FSCRYPT_POLICY := 2
 
+# Python：twrp‑16.0兼容性差，先注释；需要再开启测试
+# TW_INCLUDE_PYTHON := true
